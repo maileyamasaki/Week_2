@@ -8,7 +8,7 @@ format:
 execute:
  echo: true
 ---
-GitHub Link: 
+GitHub Link: https://github.com/maileyamasaki/Week_2
 
 ```{python}
 import pandas as pd

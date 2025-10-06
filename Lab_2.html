@@ -2202,8 +2202,8 @@ vertical-align: -.125em;
 </header>
 
 
-<p>GitHub Link:</p>
-<div id="b6b31435" class="cell" data-execution_count="1">
+<p>GitHub Link: https://github.com/maileyamasaki/Week_2</p>
+<div id="155196bb" class="cell" data-execution_count="1">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
 <span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> plotnine <span class="im">import</span> ggplot, geom_point, aes, geom_boxplot, labs, geom_bar, facet_wrap, theme, element_text, scale_fill_discrete</span>
 <span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
@@ -2215,7 +2215,7 @@ vertical-align: -.125em;
 <li><p>The table shows weekly sales data for Hass avocados extending from 2013 to 2020, including the number of units sold and the average price. The data comes from retailers’ cash registers and covers many store types. The average price is shown per avocado, even when they are sold in bags. The product codes (PLUs) only apply to Hass avocados.</p></li>
 <li><p>Cleaning the data</p></li>
 </ol>
-<div id="9df295a8" class="cell" data-execution_count="2">
+<div id="2fe94082" class="cell" data-execution_count="2">
 <div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>df <span class="op">=</span> df.rename(columns<span class="op">=</span>{</span>
 <span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;4046&quot;</span>: <span class="st">&quot;small_hass&quot;</span>,</span>
 <span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">&quot;4225&quot;</span>: <span class="st">&quot;large_hass&quot;</span>,</span>
@@ -2237,7 +2237,7 @@ vertical-align: -.125em;
 <ol start="3" type="1">
 <li>Major geographical region selling the most total organic, small Hass avocados in 2017.</li>
 </ol>
-<div id="a51fa1e0" class="cell" data-execution_count="3">
+<div id="d91c619b" class="cell" data-execution_count="3">
 <div class="sourceCode cell-code" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>df1 <span class="op">=</span> df[(df[<span class="st">&quot;region_type&quot;</span>] <span class="op">==</span> <span class="st">&quot;Region&quot;</span>) <span class="op">&amp;</span> (df[<span class="st">&quot;type&quot;</span>] <span class="op">==</span> <span class="st">&quot;organic&quot;</span>) <span class="op">&amp;</span> (df[<span class="st">&quot;year&quot;</span>] <span class="op">==</span> <span class="dv">2017</span>)]</span>
 <span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>region_totals <span class="op">=</span> (df1.groupby(<span class="st">&quot;geography&quot;</span>)[<span class="st">&quot;small_hass&quot;</span>].<span class="bu">sum</span>())</span>
@@ -2255,7 +2255,7 @@ total avocados: 1870206.29</code></pre>
 <ol start="4" type="1">
 <li>Month with highest average volume of avocado sales.</li>
 </ol>
-<div id="7ebc34ec" class="cell" data-execution_count="4">
+<div id="06336fbf" class="cell" data-execution_count="4">
 <div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&quot;date&quot;</span>] <span class="op">=</span> pd.to_datetime(df[<span class="st">&quot;date&quot;</span>])</span>
 <span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>df[<span class="st">&quot;month&quot;</span>] <span class="op">=</span> df[<span class="st">&quot;date&quot;</span>].dt.month</span>
@@ -2277,7 +2277,7 @@ avaerage avocados: 1123632.254218107</code></pre>
 <ol start="5" type="1">
 <li>Metro area geographical region with most total avocados.</li>
 </ol>
-<div id="a3cfe263" class="cell" data-execution_count="5">
+<div id="b7c70723" class="cell" data-execution_count="5">
 <div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>df2 <span class="op">=</span> df[(df[<span class="st">&quot;region_type&quot;</span>] <span class="op">==</span> <span class="st">&quot;Metro&quot;</span>)]</span>
 <span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>metro_totals <span class="op">=</span> (df2.groupby(<span class="st">&quot;geography&quot;</span>)[<span class="st">&quot;total_avocados&quot;</span>].<span class="bu">sum</span>())</span>
@@ -2292,7 +2292,7 @@ avaerage avocados: 1123632.254218107</code></pre>
 total avocados: 2075907887.55</code></pre>
 </div>
 </div>
-<div id="1828c4e2" class="cell" data-execution_count="6">
+<div id="6b05606e" class="cell" data-execution_count="6">
 <div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a>metro_means <span class="op">=</span> (df2.groupby(<span class="st">&quot;geography&quot;</span>)[<span class="st">&quot;total_avocados&quot;</span>].mean().sort_values(ascending<span class="op">=</span><span class="va">False</span>))</span>
 <span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>top5 <span class="op">=</span> metro_means.head(<span class="dv">5</span>).index</span>
@@ -2314,14 +2314,14 @@ total avocados: 2075907887.55</code></pre>
 <ol start="6" type="1">
 <li>Dataset containing only the following geographies: “Los Angeles”, “San Diego”, “Sacramento”, and “San Francisco”.</li>
 </ol>
-<div id="008bcb16" class="cell" data-execution_count="7">
+<div id="ab14e717" class="cell" data-execution_count="7">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>ca_cities <span class="op">=</span> [<span class="st">&quot;Los Angeles&quot;</span>, <span class="st">&quot;San Diego&quot;</span>, <span class="st">&quot;Sacramento&quot;</span>, <span class="st">&quot;San Francisco&quot;</span>]</span>
 <span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>df_ca <span class="op">=</span> df[df[<span class="st">&quot;geography&quot;</span>].isin(ca_cities)]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <ol start="7" type="1">
 <li>California region where the price of organic vs conventional avocados varies the most.</li>
 </ol>
-<div id="af244150" class="cell" data-execution_count="8">
+<div id="e0798169" class="cell" data-execution_count="8">
 <div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a>temp <span class="op">=</span> (df_ca.groupby([<span class="st">&quot;geography&quot;</span>, <span class="st">&quot;type&quot;</span>], as_index<span class="op">=</span><span class="va">False</span>)[<span class="st">&quot;average_price&quot;</span>].mean())</span>
 <span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a>df_ca1 <span class="op">=</span> temp.pivot(index<span class="op">=</span><span class="st">&quot;geography&quot;</span>, columns<span class="op">=</span><span class="st">&quot;type&quot;</span>, values<span class="op">=</span><span class="st">&quot;average_price&quot;</span>).reset_index()</span>
 <span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a></span>
@@ -2343,7 +2343,7 @@ average price difference: 0.718954248366013</code></pre>
 <ol start="8" type="1">
 <li></li>
 </ol>
-<div id="042f7102" class="cell" data-execution_count="9">
+<div id="894b3dd6" class="cell" data-execution_count="9">
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>sizes <span class="op">=</span> [<span class="st">&quot;xlarge_hass&quot;</span>, <span class="st">&quot;large_hass&quot;</span>, <span class="st">&quot;small_hass&quot;</span>]</span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>df_ca2 <span class="op">=</span> (df_ca.loc[df[<span class="st">&quot;geography&quot;</span>].isin(ca_cities), [<span class="st">&quot;geography&quot;</span>, <span class="st">&quot;type&quot;</span>] <span class="op">+</span> sizes].melt(id_vars<span class="op">=</span>[<span class="st">&quot;geography&quot;</span>, <span class="st">&quot;type&quot;</span>],</span>
@@ -2378,7 +2378,7 @@ average price difference: 0.718954248366013</code></pre>
 <ol start="9" type="1">
 <li>Our vizualization displays Los Angeles as a major outlier among this data, but regarless, we see that there is a positive relationship between the average spending on avocados and the average housing prices. Thus we have reason to conclude that cities with higher average housing prices also have higher avocado spending, thus it may be more difficult to afford houses in these areas due to high cost and higher spending.</li>
 </ol>
-<div id="83631812" class="cell" data-execution_count="10">
+<div id="6ef7dafa" class="cell" data-execution_count="10">
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>df_housing <span class="op">=</span> pd.read_csv(<span class="st">&quot;/Users/maileyamasaki/Desktop/Cal Poly SLO/Machine Learning/Week_2/med_sale_price.csv&quot;</span>, encoding<span class="op">=</span><span class="st">&quot;utf-16&quot;</span>, sep<span class="op">=</span><span class="st">&quot;</span><span class="ch">\t</span><span class="st">&quot;</span>)</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>df_ca3 <span class="op">=</span> df_ca[[<span class="st">&quot;average_price&quot;</span>, <span class="st">&quot;geography&quot;</span>, <span class="st">&quot;total_avocados&quot;</span>]]</span>
