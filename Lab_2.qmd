@@ -1,0 +1,194 @@
+---
+title: "Lab 2"
+author: "Maile Yamasaki"
+format:
+ html:
+   theme: cosmo
+   embed-resources: true
+execute:
+ echo: true
+---
+GitHub Link: 
+
+```{python}
+import pandas as pd
+from plotnine import ggplot, geom_point, aes, geom_boxplot, labs, geom_bar, facet_wrap, theme, element_text, scale_fill_discrete
+import numpy as np
+import matplotlib.pyplot as plt
+
+df = pd.read_csv("/Users/maileyamasaki/Desktop/Cal Poly SLO/Machine Learning/Week_2/avocado-updated-2020.csv")
+```
+
+1. The table shows weekly sales data for Hass avocados extending from 2013 to 2020, including the number of units sold and the average price. The data comes from retailers’ cash registers and covers many store types. The average price is shown per avocado, even when they are sold in bags. The product codes (PLUs) only apply to Hass avocados.
+
+2. Cleaning the data
+```{python}
+df = df.rename(columns={
+    "4046": "small_hass",
+    "4225": "large_hass",
+    "4770": "xlarge_hass",
+    "total_volume": "total_avocados"})
+
+def categorize_region(region):
+    if region == "Total U.S.":
+        return "Total"
+    elif region in ["West", "Northeast", "South", "Midwest", "Great Lakes", "Plains", "Midsouth"]:
+        return "Region"
+    elif region in ["California", "South Carolina", "New York"]:
+        return "State"
+    else:
+        return "Metro"
+
+df["region_type"] = df["geography"].apply(categorize_region)
+```
+
+3. Major geographical region selling the most total organic, small Hass avocados in 2017.
+```{python}
+df1 = df[(df["region_type"] == "Region") & (df["type"] == "organic") & (df["year"] == 2017)]
+
+region_totals = (df1.groupby("geography")["small_hass"].sum())
+
+top_region = region_totals.idxmax()
+top_value = region_totals.max()
+
+print(top_region)
+print("total avocados:", top_value)
+```
+
+4. Month with highest average volume of avocado sales.
+```{python}
+df["date"] = pd.to_datetime(df["date"])
+
+df["month"] = df["date"].dt.month
+df["month_name"] = df["date"].dt.month_name()
+df["day"] = df["date"].dt.day
+
+monthly_avg = df.groupby("month_name")["total_avocados"].mean()
+
+top_month = monthly_avg.idxmax()
+top_value = monthly_avg.max()
+
+print(top_month)
+print("avaerage avocados:", top_value)
+```
+
+5. Metro area geographical region with most total avocados. 
+```{python}
+df2 = df[(df["region_type"] == "Metro")]
+
+metro_totals = (df2.groupby("geography")["total_avocados"].sum())
+
+top_metro = metro_totals.idxmax()
+top_value = metro_totals.max()
+
+print(top_metro)
+print("total avocados:", top_value)
+```
+
+```{python}
+metro_means = (df2.groupby("geography")["total_avocados"].mean().sort_values(ascending=False))
+
+top5 = metro_means.head(5).index
+
+df_top5 = df2[df2["geography"].isin(top5)].copy()
+df_top5["geography"] = pd.Categorical(df_top5["geography"], categories=top5)
+
+(ggplot(df_top5, aes(x = "geography", y = "total_avocados", fill = "geography"))
++ geom_boxplot()
++labs(x = "Metro Area", y = "Total Avocados"))
+```
+
+6. Dataset containing only the following geographies: "Los Angeles", "San Diego", "Sacramento", and "San Francisco".
+
+```{python}
+ca_cities = ["Los Angeles", "San Diego", "Sacramento", "San Francisco"]
+df_ca = df[df["geography"].isin(ca_cities)]
+```
+
+7. California region where the price of organic vs conventional avocados varies the most. 
+```{python}
+temp = (df_ca.groupby(["geography", "type"], as_index=False)["average_price"].mean())
+df_ca1 = temp.pivot(index="geography", columns="type", values="average_price").reset_index()
+
+df_ca1["average price difference"] = df_ca1["organic"] - df_ca1["conventional"]
+
+greatest_diff = df_ca1["average price difference"].max()
+
+id_greatest_diff = df_ca1["average price difference"].idxmax()
+id = df_ca1["average price difference"].idxmax()
+top_geo = df_ca1.loc[id, "geography"]
+
+print(top_geo)
+print("average price difference:", greatest_diff)
+```
+
+8. 
+```{python}
+sizes = ["xlarge_hass", "large_hass", "small_hass"]
+
+df_ca2 = (df_ca.loc[df["geography"].isin(ca_cities), ["geography", "type"] + sizes].melt(id_vars=["geography", "type"],
+            value_vars=sizes,
+            var_name="size",
+            value_name="vol")
+)
+
+df_ca2["size"] = pd.Categorical(df_ca2["size"], categories=sizes, ordered=True)
+
+(ggplot(df_ca2, aes(
+  x = "geography",
+  y = "vol",
+  fill = "size"
+))
++ geom_bar(stat = "identity", position = "fill")
++ facet_wrap("~type")
++ labs(title = "Proportion of Average of Hass Avocado Sales by Size", x = "Region of California", y = "Proportion")
++ theme(axis_text_x=element_text(rotation=25, ha="right"))
++ scale_fill_discrete(
+    breaks=["small_hass", "large_hass", "xlarge_hass"],
+    labels=["Small", "Large", "Xlarge"])
+)
+```
+
+9.  Our vizualization displays Los Angeles as a major outlier among this data, but regarless, we see that there is a positive relationship between the average spending on avocados and the average housing prices. Thus we have reason to conclude that cities with higher average housing prices also have higher avocado spending, thus it may be more difficult to afford houses in these areas due to high cost and higher spending. 
+
+```{python}
+df_housing = pd.read_csv("/Users/maileyamasaki/Desktop/Cal Poly SLO/Machine Learning/Week_2/med_sale_price.csv", encoding="utf-16", sep="\t")
+
+df_ca3 = df_ca[["average_price", "geography", "total_avocados"]]
+df_ca3["avo_spending"] = df_ca3["average_price"]*df_ca3["total_avocados"]
+
+cities = ["Los Angeles", "San Francisco", "San Diego", "Sacramento"]
+
+df_ca3 = (df_ca3.groupby("geography")["avo_spending"].mean())
+
+df = pd.concat([df_housing.reset_index(drop=True),df_ca3.reset_index(drop=True)], axis=1)
+df["avo_spending"] = df["avo_spending"].shift(1)
+
+df = df.rename(columns={df.columns[0]: "city"}).copy()
+if str(df.loc[0, "city"]).strip().lower() == "region":
+    df = df.iloc[1:].reset_index(drop=True)
+
+housing_cols = df.columns.difference(["city", "average_price", "avo_spending"])
+
+df["avg_house_price"] = (
+    df[housing_cols]
+      .apply(lambda s: pd.to_numeric(
+          s.astype(str).str.replace(r"[\$,]", "", regex=True).str.replace("K", ""),
+          errors="coerce") * np.where(s.astype(str).str.endswith("K"), 1000, 1))
+      .mean(axis=1)
+)
+
+x, y = df["avg_house_price"], df["avo_spending"]
+m, b = np.polyfit(x, y, 1)
+
+fig, ax = plt.subplots(figsize=(8,5))
+ax.scatter(x, y)
+ax.plot([x.min(), x.max()], [m*x.min()+b, m*x.max()+b])
+for _, r in df.iterrows():
+    ax.annotate(r["city"], (r["avg_house_price"], r["avo_spending"]), xytext=(5,5), textcoords="offset points")
+ax.set(title="Housing Prices vs. Avocado Spending",
+       xlabel="Average housing price ($)", ylabel="Avocado spending ($)")
+plt.tight_layout()
+plt.show()
+```
+
